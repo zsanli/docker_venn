@@ -1,0 +1,20 @@
+FROM  python:3.9.2
+LABEL maintainer="zhi.zhang@lns.etat.lu"
+RUN useradd -u 9393 -ms /bin/bash velona 
+USER   velona
+WORKDIR /home/velona
+ENV PATH=$PATH':/home/velona/.local/bin'
+VOLUME /mnt/gen_bioinfassets
+VOLUME  /mnt/gen_bioinfdata
+VOLUME  /mnt/gen_bioinfinternal
+ENV HTTP_PROXY "http://proxy.etat.lu:80"
+ENV HTTPS_PROXY "http://proxy.etat.lu:80"
+ENV http_proxy "http://proxy.etat.lu:80"
+ENV https_proxy "http://proxy.etat.lu:80"
+ENV NO_PROXY "127.0.0.1,localhost,*.lns.lu"
+#USER root
+#RUN pip install pandas,nump,seaborn  --user
+#USER velona
+COPY .  /home/velona/
+RUN pip install -r requirements.txt
+CMD ["bash"] 

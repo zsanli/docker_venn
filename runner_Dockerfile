@@ -1,0 +1,6 @@
+FROM compare_venn_base:v0.1 
+LABEL maintainer="zhi.zhang@lns.etat.lu"
+USER   velona
+WORKDIR /home/velona
+COPY ./draw_comparisonVenn.py  /home/velona/
+CMD ["bash"] 

@@ -1,0 +1,1 @@
+docker run  --rm   -v  /mnt/gen_bioinfinternal:/mnt/gen_bioinfinternal -v  /mnt/gen_bioinfassets:/mnt/gen_bioinfassets -v  /mnt/gen_bioinfdata:/mnt/gen_bioinfdata  -it compare_venn:v0.1 python draw_comparisonVcf.py 0 -i dijex3471_zzha.trioCGP_gnomad_SnpSift_SPiP.ann.proband.ranked.SPiP.vcf.DijonTsv.gnomADexom001.tsv -r dijex3471.2019-01-28.report -s dijex3471_pad10 
