@@ -51,15 +51,15 @@ def main0(args):
 
     with open(os.path.join(output_dir,"custom_set_only.tsv"),"w+") as fh:
         for i in custom_set_only:
-            fh.write(i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n")
+            fh.write("".join(i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"))
 
     with open(os.path.join(output_dir,"report_set_only.tsv"),"w+") as fh:
         for i in report_set_only:
-            fh.write(i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n")
+            fh.write("".join(i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"))
 
     with open(os.path.join(output_dir,"two_sets_intersection.tsv"),"w+") as fh:
         for i in two_sets_intersection:
-            fh.write(i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n")
+            fh.write("".join(i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"))
 
 
 
