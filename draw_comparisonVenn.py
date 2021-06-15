@@ -38,6 +38,7 @@ def main0(args):
     output_dir = os.path.dirname(input_custom)
     input_custom_data=pd.read_csv(input_custom,delimiter="\t")
     input_report_data=pd.read_csv(input_report,delimiter="\t")
+    chr_index = pd.CategoricalDtype(["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","X","Y"], ordered = True)
 
     input_custom_set=set(input_custom_data['#Position'])
     input_report_set=set(input_report_data['#Position'])
@@ -49,25 +50,33 @@ def main0(args):
     report_set_only = pd.DataFrame({'#Position': list(input_report_set.difference(input_custom_set))})
     two_sets_intersection = pd.DataFrame({'#Position': list(input_custom_set & input_report_set)})
 
-    custom_set_only["#Position"].replace({"chr": ""}, inplace=True)
-    report_set_only["#Position"].replace({"chr": ""}, inplace=True)
-    two_sets_intersection["#Position"].replace({"chr": ""}, inplace=True)
+    custom_set_only2 = pd.DataFrame({'#Position': custom_set_only["#Position"].str.replace("chr", "")})
+    report_set_only2 = pd.DataFrame({'#Position': report_set_only["#Position"].str.replace("chr", "")})
+    two_sets_intersection2 = pd.DataFrame({'#Position': two_sets_intersection["#Position"].str.replace("chr", "")})
 
     df_custom_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
     df_report_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
     df_two_sets_intersection = pd.DataFrame({'#CHROM': [],'POS':[]})
 
-    df_custom_set_only[['#CHROM','POS']] = custom_set_only['#Position'].str.split(':',expand=True)
-    df_report_set_only[['#CHROM','POS']] = report_set_only['#Position'].str.split(':',expand=True)
-    df_two_sets_intersection[['#CHROM','POS']] = two_sets_intersection['#Position'].str.split(':',expand=True)
+    df_custom_set_only[['#CHROM','POS']] = custom_set_only2['#Position'].str.split(':',expand=True)
+    df_report_set_only[['#CHROM','POS']] = report_set_only2['#Position'].str.split(':',expand=True)
+    df_two_sets_intersection[['#CHROM','POS']] = two_sets_intersection2['#Position'].str.split(':',expand=True)
 
-    df_custom_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
-    df_report_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
-    df_two_sets_intersection.sort_values(['#CHROM','POS'], ascending=[True, True])
+    df_custom_set_only['#CHROM'] = df_custom_set_only['#CHROM'].astype(chr_index)
+    df_report_set_only['#CHROM'] =  df_report_set_only['#CHROM'].astype(chr_index)
+    df_two_sets_intersection['#CHROM'] = df_two_sets_intersection['#CHROM'].astype(chr_index)
 
-    df_custom_set_only.to_csv(os.path.join(output_dir,"custom_set_only.tsv"),index=False)
-    df_report_set_only.to_csv(os.path.join(output_dir,"report_set_only.tsv"),index=False)
-    df_two_sets_intersection.to_csv(os.path.join(output_dir,"two_sets_intersection.tsv"),index=False)
+    df_custom_set_only['POS'] = df_custom_set_only['POS'].astype('int')
+    df_report_set_only['POS'] =  df_report_set_only['POS'].astype('int')
+    df_two_sets_intersection['POS'] = df_two_sets_intersection['POS'].astype('int')
+
+    df_custom_set_only2 = df_custom_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
+    df_report_set_only2 = df_report_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
+    df_two_sets_intersection2 = df_two_sets_intersection.sort_values(['#CHROM','POS'], ascending=[True, True])
+
+    df_custom_set_only2.to_csv(os.path.join(output_dir,"custom_set_only.tsv"),index=False)
+    df_report_set_only2.to_csv(os.path.join(output_dir,"report_set_only.tsv"),index=False)
+    df_two_sets_intersection2.to_csv(os.path.join(output_dir,"two_sets_intersection.tsv"),index=False)
 
 
 
