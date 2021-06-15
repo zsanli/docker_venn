@@ -45,17 +45,17 @@ def main0(args):
     venn2([input_custom_set, input_report_set], (setting_name, 'report'))
     plt.savefig(os.path.join(output_dir,setting_name+"_venn.png"))
 
-    custom_set_only = input_custom_set.difference(input_report_set)
-    report_set_only = input_report_set.difference(input_custom_set)
-    two_sets_intersection = input_custom_set & input_report_set
+    custom_set_only = pd.DataFrame({'#Position': list(input_custom_set.difference(input_report_set))})
+    report_set_only = pd.DataFrame({'#Position': list(input_report_set.difference(input_custom_set))})
+    two_sets_intersection = pd.DataFrame({'#Position': list(input_custom_set & input_report_set)})
 
     df_custom_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
     df_report_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
     df_two_sets_intersection = pd.DataFrame({'#CHROM': [],'POS':[]})
 
-    df_custom_set_only[['#CHROM','POS']] = pd.DataFrame(custom_set_only)['#Position'].str.split(':',expand=True)
-    df_report_set_only[['#CHROM','POS']] = pd.DataFrame(report_set_only)['#Position'].str.split(':',expand=True)
-    df_two_sets_intersection[['#CHROM','POS']] = pd.DataFrame(two_sets_intersection)['#Position'].str.split(':',expand=True)
+    df_custom_set_only[['#CHROM','POS']] = custom_set_only['#Position'].str.split(':',expand=True)
+    df_report_set_only[['#CHROM','POS']] = report_set_only['#Position'].str.split(':',expand=True)
+    df_two_sets_intersection[['#CHROM','POS']] = two_sets_intersection['#Position'].str.split(':',expand=True)
 
     df_custom_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
     df_report_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
