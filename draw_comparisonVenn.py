@@ -49,6 +49,10 @@ def main0(args):
     report_set_only = pd.DataFrame({'#Position': list(input_report_set.difference(input_custom_set))})
     two_sets_intersection = pd.DataFrame({'#Position': list(input_custom_set & input_report_set)})
 
+    custom_set_only["#Position"].replace({"chr": ""}, inplace=True)
+    report_set_only["#Position"].replace({"chr": ""}, inplace=True)
+    two_sets_intersection["#Position"].replace({"chr": ""}, inplace=True)
+
     df_custom_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
     df_report_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
     df_two_sets_intersection = pd.DataFrame({'#CHROM': [],'POS':[]})
