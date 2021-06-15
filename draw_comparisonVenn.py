@@ -49,17 +49,35 @@ def main0(args):
     report_set_only = input_report_set.difference(input_custom_set)
     two_sets_intersection = input_custom_set & input_report_set
 
-    with open(os.path.join(output_dir,"custom_set_only.tsv"),"w+") as fh:
-        for i in custom_set_only:
-            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
+    df_custom_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
+    df_report_set_only = pd.DataFrame({'#CHROM': [],'POS':[]})
+    df_two_sets_intersection = pd.DataFrame({'#CHROM': [],'POS':[]})
 
-    with open(os.path.join(output_dir,"report_set_only.tsv"),"w+") as fh:
-        for i in report_set_only:
-            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
+    df_custom_set_only[['#CHROM','POS']] = custom_set_only['#Position'].str.split(':',expand=True)
+    df_report_set_only[['#CHROM','POS']] = report_set_only['#Position'].str.split(':',expand=True)
+    df_two_sets_intersection[['#CHROM','POS']] = two_sets_intersection['#Position'].str.split(':',expand=True)
 
-    with open(os.path.join(output_dir,"two_sets_intersection.tsv"),"w+") as fh:
-        for i in two_sets_intersection:
-            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
+    df_custom_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
+    df_report_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
+    df_two_sets_intersection.sort_values(['#CHROM','POS'], ascending=[True, True])
+
+    df_custom_set_only.to_csv(os.path.join(output_dir,"custom_set_only.tsv"),index=False)
+    df_report_set_only..to_csv(os.path.join(output_dir,"report_set_only.tsv"),index=False)
+    df_two_sets_intersection.to_csv(os.path.join(output_dir,"two_sets_intersection.tsv"),index=False)
+
+
+
+#    with open(os.path.join(output_dir,"custom_set_only.tsv"),"w+") as fh:
+#        for i in custom_set_only:
+#            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
+#
+#    with open(os.path.join(output_dir,"report_set_only.tsv"),"w+") as fh:
+#        for i in report_set_only:
+#            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
+#
+#    with open(os.path.join(output_dir,"two_sets_intersection.tsv"),"w+") as fh:
+#        for i in two_sets_intersection:
+#            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
 
 
 
