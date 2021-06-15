@@ -74,9 +74,9 @@ def main0(args):
     df_report_set_only2 = df_report_set_only.sort_values(['#CHROM','POS'], ascending=[True, True])
     df_two_sets_intersection2 = df_two_sets_intersection.sort_values(['#CHROM','POS'], ascending=[True, True])
 
-    df_custom_set_only2.to_csv(os.path.join(output_dir,"custom_set_only.tsv"),index=False)
-    df_report_set_only2.to_csv(os.path.join(output_dir,"report_set_only.tsv"),index=False)
-    df_two_sets_intersection2.to_csv(os.path.join(output_dir,"two_sets_intersection.tsv"),index=False)
+    df_custom_set_only2.to_csv(os.path.join(output_dir,"custom_set_only.tsv"), sep='\t',index=False, header=False)
+    df_report_set_only2.to_csv(os.path.join(output_dir,"report_set_only.tsv"), sep='\t',index=False, header=False)
+    df_two_sets_intersection2.to_csv(os.path.join(output_dir,"two_sets_intersection.tsv"), sep='\t', index=False, header=False)
 
 
 
