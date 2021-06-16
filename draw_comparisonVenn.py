@@ -140,8 +140,8 @@ def main1(args):
     pd_coordinate_list_in_vcf2 = pd_coordinate_list_in_vcf.sort_values(['#CHROM','POS'], ascending=[True, True])
     
 
-    pd_coordinate_list_not_in_vcf2.to_csv(os.path.join(output_dir,"_coordinate_list_NOT_in_vcf.tsv"%(setting_name)), sep='\t',index=False, header=False)
-    pd_coordinate_list_in_vcf2.to_csv(os.path.join(output_dir,"_coordinate_list_in_vcf.tsv"%(setting_name)), sep='\t',index=False, header=False)
+    pd_coordinate_list_not_in_vcf2.to_csv(os.path.join(output_dir,"%s_coordinate_list_NOT_in_vcf.tsv"%(setting_name)), sep='\t',index=False, header=False)
+    pd_coordinate_list_in_vcf2.to_csv(os.path.join(output_dir,"%s_coordinate_list_in_vcf.tsv"%(setting_name)), sep='\t',index=False, header=False)
     
 #    with open(os.path.join(output_dir,"custom_set_only.tsv"),"w+") as fh:
 #        for i in custom_set_only:
