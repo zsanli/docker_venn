@@ -163,11 +163,13 @@ def main2(args):
     setting_name=args.setting
 
     output_dir = os.path.dirname( input_vcf)
-    output_vcf_NOT_in_list = os.path.join( output_dir, '%s_vcf_NOT_in_list.vcf'%(args.setting))
-    output_vcf_in_list = os.path.join( output_dir, '%s_vcf_in_list.vcf'%(args.setting))
+    output_vcf_NOT_in_list = os.path.join( output_dir, '%s_vcf_NOT_in_list.vcf'%(setting_name))
+    output_vcf_in_list = os.path.join( output_dir, '%s_vcf_in_list.vcf'%(setting_name))
 
     input_coordinate_list_data=pd.read_csv(input_coordinate_list,header=None,delimiter="\t")
     input_coordinate_list_data.columns = ["#CHROM","POS"]
+    input_coordinate_list_data['#CHROM'] = input_coordinate_list_data['#CHROM'].astype(str)
+    input_coordinate_list_data['POS'] = input_coordinate_list_data['POS'].astype(str)
 
     with open(input_vcf, 'r') as fh_input_vcf, open(output_vcf_NOT_in_list, 'w+') as fh_output_vcf_NOT_in_list, open(output_vcf_in_list, 'w+') as fh_output_vcf_in_list:
         while True:
