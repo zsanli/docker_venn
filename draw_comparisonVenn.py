@@ -218,7 +218,7 @@ def main():
                           type=str, help='input coordinate list')
     parser_2.add_argument('-s', '--setting',
                           type=str, help='the setting name')
-    parser_1.set_defaults(func=main2)
+    parser_2.set_defaults(func=main2)
 
     args = parser.parse_args(sys.argv[1:])
     args.func(args)
