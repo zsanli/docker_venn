@@ -179,7 +179,7 @@ def main2(args):
                 fh_output_vcf_in_list.write(line)
             else:
                 input_vcf_data = line.rsplit("\t")
-                if not input_coordinate_list_data.loc[(input_coordinate_list_data['#CHROM'] ==  input_vcf_data[0]) & (input_coordinate_list_data['POS'] ==  str(input_vcf_data[1]))].empty:
+                if not input_coordinate_list_data.loc[(input_coordinate_list_data['#CHROM'] ==  str(input_vcf_data[0])) & (input_coordinate_list_data['POS'] ==  str(input_vcf_data[1]))].empty:
                     fh_output_vcf_in_list.write(line)
                 else:
                     fh_output_vcf_NOT_in_list.write(line)
