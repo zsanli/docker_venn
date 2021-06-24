@@ -163,8 +163,8 @@ def main2(args):
     setting_name=args.setting
 
     output_dir = os.path.dirname( input_vcf)
-    output_vcf_NOT_in_list = os.path.join( output_dir, '%s_vcf_NOT_in_list'%(args.setting))
-    output_vcf_in_list = os.path.join( output_dir, '%s_vcf_in_list'%(args.setting))
+    output_vcf_NOT_in_list = os.path.join( output_dir, '%s_vcf_NOT_in_list.vcf'%(args.setting))
+    output_vcf_in_list = os.path.join( output_dir, '%s_vcf_in_list.vcf'%(args.setting))
 
     input_coordinate_list_data=pd.read_csv(input_coordinate_list,header=None,delimiter="\t")
     input_coordinate_list_data.columns = ["#CHROM","POS"]
