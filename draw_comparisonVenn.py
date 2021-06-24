@@ -156,6 +156,36 @@ def main1(args):
 #            fh.write("".join([i.split(":")[0].replace("chr",""),"\t",i.split(":")[1],"\n"]))
 
 
+def main2(args):
+    print(args)
+    input_vcf=args.input_vcf
+    input_coordinate_list=args.input_coordinate_list
+    setting_name=args.setting
+
+    output_dir = os.path.dirname( input_vcf)
+    output_vcf_NOT_in_list = os.path.join( output_dir, '%s_vcf_NOT_in_list'%(args.setting))
+    output_vcf_in_list = os.path.join( output_dir, '%s_vcf_in_list'%(args.setting))
+
+    input_coordinate_list_data=pd.read_csv(input_coordinate_list,header=None,delimiter="\t")
+    input_coordinate_list_data.columns = ["#CHROM","POS"]
+
+    with open(input_vcf, 'r') as fh_input_vcf, open(output_vcf_NOT_in_list, 'w+') as fh_output_vcf_NOT_in_list, open(output_vcf_in_list, 'w+') as fh_output_vcf_in_list:
+        while True:
+            line = fh_input_vcf.readline()
+            if not line:
+                break
+            elif re.search(pattern11, line):
+                fh_output_vcf_NOT_in_list.write(line)
+                fh_output_vcf_in_list.write(line)
+            else:
+                input_vcf_data = line.rsplit("\t")
+                if input_coordinate_list_data.loc[(input_coordinate_list_data['#CHROM'] ==  input_vcf_data[0]) & (input_coordinate_list_data['POS'] ==  input_vcf_data[1])]:
+                    fh_output_vcf_in_list.write(line)
+                else:
+                    fh_output_vcf_NOT_in_list.write(line)
+    
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='draw venn diagram for two tsv')
@@ -179,6 +209,16 @@ def main():
     parser_1.add_argument('-s', '--setting',
                           type=str, help='the setting name')
     parser_1.set_defaults(func=main1)
+
+    parser_2 = subparsers.add_parser('2', description='split vcf from coordinate list',
+                                     help='split vcf from coordinate list', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser_2.add_argument('-r', '--input_vcf',
+                          type=str, help='the input vcf')
+    parser_2.add_argument('-i', '--input_coordinate_list',
+                          type=str, help='input coordinate list')
+    parser_2.add_argument('-s', '--setting',
+                          type=str, help='the setting name')
+    parser_1.set_defaults(func=main2)
 
     args = parser.parse_args(sys.argv[1:])
     args.func(args)
