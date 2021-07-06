@@ -36,6 +36,26 @@ def rm_comment(x):
     else:
         return False
 
+def cal_freq(x):
+    an = int(str(x).split(":")[0])
+    ac = str(str(x).split(":")[1])
+    freq = []
+    if len(ac.split(",")) == 1:
+        ac = int(ac)
+        if an == 0:
+            freq.append("NA") 
+        else:
+            freq.append(str(ac/an))
+        return freq[0]
+    else :
+        for i in ac.split(","):
+            iac = int(i)
+            if an == 0:
+                freq.append("NA")
+            else:
+                freq.append(str(iac/an))
+        return ",".join(freq)
+
 pattern1 = re.compile(r'''^##''')
 pattern11 = re.compile(r'''^#''')
 
@@ -185,8 +205,33 @@ def main2(args):
                     fh_output_vcf_in_list.write(line)
                 else:
                     fh_output_vcf_NOT_in_list.write(line)
-    
 
+
+def main3(args):
+    print(args)
+    input_dbsnp_alpha_vcf=args.input_dbsnp_alpha_vcf
+    output_dbsnp_alpha_vcf=args.output_dbsnp_alpha_vcf
+
+with open(input_dbsnp_alpha_vcf, "r") as fh_input, open(output_dbsnp_alpha_vcf, "a") as fh_output:
+    samples = []
+    while True:
+        line = fh_input.readline().rstrip()
+        if not line:
+            break
+        elif re.search(pattern1, line) :
+            fh_output.write(line+"\n")
+        elif re.search(pattern11, line):
+            fh_output.write(line+"\n")
+            samples = line.split("\t")[9:21]
+        else:
+            vcf_first_6_col = line.split("\t")[0:7]
+            vcf_format = line.split("\t")[8]
+            allele_count = line.split("\t")[9:21]
+            info = []
+            for i in range(12):
+                info.append(samples[i]+"="+cal_freq(allele_count[i])) 
+            fh_output.write("\t".join(vcf_first_6_col)+ "\t"+ ";".join(info) +"\t" +  vcf_format +"\t" +"\t".join(allele_count) + "\n")
+    
 
 def main():
     parser = argparse.ArgumentParser(
@@ -221,6 +266,14 @@ def main():
     parser_2.add_argument('-s', '--setting',
                           type=str, help='the setting name')
     parser_2.set_defaults(func=main2)
+
+    parser_3 = subparsers.add_parser('3', description='format dbsnp_alpha',
+                                     help='format dbsnp_alpha', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser_3.add_argument('-i', '--input_dbsnp_alpha_vcf',
+                          type=str, help='input dbsnp_alpha vcf')
+    parser_3.add_argument('-o', '--output_dbsnp_alpha_vcf',
+                          type=str, help='output dbsnp_alpha vcf')
+    parser_3.set_defaults(func=main3)
 
     args = parser.parse_args(sys.argv[1:])
     args.func(args)
