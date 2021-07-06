@@ -212,25 +212,25 @@ def main3(args):
     input_dbsnp_alpha_vcf=args.input_dbsnp_alpha_vcf
     output_dbsnp_alpha_vcf=args.output_dbsnp_alpha_vcf
 
-with open(input_dbsnp_alpha_vcf, "r") as fh_input, open(output_dbsnp_alpha_vcf, "a") as fh_output:
-    samples = []
-    while True:
-        line = fh_input.readline().rstrip()
-        if not line:
-            break
-        elif re.search(pattern1, line) :
-            fh_output.write(line+"\n")
-        elif re.search(pattern11, line):
-            fh_output.write(line+"\n")
-            samples = line.split("\t")[9:21]
-        else:
-            vcf_first_6_col = line.split("\t")[0:7]
-            vcf_format = line.split("\t")[8]
-            allele_count = line.split("\t")[9:21]
-            info = []
-            for i in range(12):
-                info.append(samples[i]+"="+cal_freq(allele_count[i])) 
-            fh_output.write("\t".join(vcf_first_6_col)+ "\t"+ ";".join(info) +"\t" +  vcf_format +"\t" +"\t".join(allele_count) + "\n")
+    with open(input_dbsnp_alpha_vcf, "r") as fh_input, open(output_dbsnp_alpha_vcf, "a") as fh_output:
+        samples = []
+        while True:
+            line = fh_input.readline().rstrip()
+            if not line:
+                break
+            elif re.search(pattern1, line) :
+                fh_output.write(line+"\n")
+            elif re.search(pattern11, line):
+                fh_output.write(line+"\n")
+                samples = line.split("\t")[9:21]
+            else:
+                vcf_first_6_col = line.split("\t")[0:7]
+                vcf_format = line.split("\t")[8]
+                allele_count = line.split("\t")[9:21]
+                info = []
+                for i in range(12):
+                    info.append(samples[i]+"="+cal_freq(allele_count[i])) 
+                fh_output.write("\t".join(vcf_first_6_col)+ "\t"+ ";".join(info) +"\t" +  vcf_format +"\t" +"\t".join(allele_count) + "\n")
     
 
 def main():
