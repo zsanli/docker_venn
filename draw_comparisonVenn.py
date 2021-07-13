@@ -238,13 +238,16 @@ def main3(args):
                 fh_output.write(line+"\n")
                 samples = line.split("\t")[9:21]
             else:
-                vcf_first_6_col = line.split("\t")[0:7]
-                vcf_format = line.split("\t")[8]
-                allele_count = line.split("\t")[9:21]
-                info = []
-                for i in range(12):
-                    info.append(POPULATION[samples[i]]+"="+cal_freq(allele_count[i])) 
-                fh_output.write("\t".join(vcf_first_6_col)+ "\t"+ ";".join(info) +"\t" +  vcf_format +"\t" +"\t".join(allele_count) + "\n")
+                try:
+                    vcf_first_6_col = line.split("\t")[0:7]
+                    vcf_format = line.split("\t")[8]
+                    allele_count = line.split("\t")[9:21]
+                    info = []
+                    for i in range(12):
+                        info.append(POPULATION[samples[i]]+"="+cal_freq(allele_count[i])) 
+                    fh_output.write("\t".join(vcf_first_6_col)+ "\t"+ ";".join(info) +"\t" +  vcf_format +"\t" +"\t".join(allele_count) + "\n")
+                except:
+                    print(line)
     
 
 def main():
