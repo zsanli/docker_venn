@@ -59,6 +59,20 @@ def cal_freq(x):
 pattern1 = re.compile(r'''^##''')
 pattern11 = re.compile(r'''^#''')
 
+POPULATION = {"SAMN10492696":"AFO",
+"SAMN10492698":	"AFA",
+"SAMN10492703":	"AFR",
+"SAMN10492695":	"EUR",
+"SAMN10492699":	"LAC",
+"SAMN10492700":	"LEN",
+"SAMN10492702":	"SAS",
+"SAMN10492697":	"EAS",
+"SAMN10492704":	"ASN",
+"SAMN10492701":	"OAS",
+"SAMN11605645":	"OTR",
+"SAMN10492705":	"TOT"
+}
+
 def main0(args):
     print(args)
     input_custom=args.input_custom
@@ -229,7 +243,7 @@ def main3(args):
                 allele_count = line.split("\t")[9:21]
                 info = []
                 for i in range(12):
-                    info.append(samples[i]+"="+cal_freq(allele_count[i])) 
+                    info.append(POPULATION[samples[i]]+"="+cal_freq(allele_count[i])) 
                 fh_output.write("\t".join(vcf_first_6_col)+ "\t"+ ";".join(info) +"\t" +  vcf_format +"\t" +"\t".join(allele_count) + "\n")
     
 
