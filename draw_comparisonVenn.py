@@ -45,7 +45,7 @@ def cal_freq(x):
         if an == 0:
             freq.append("NA") 
         else:
-            freq.append(str(ac/an))
+            freq.append(str(round(ac/an,6)))
         return freq[0]
     else :
         for i in ac.split(","):
@@ -53,7 +53,7 @@ def cal_freq(x):
             if an == 0:
                 freq.append("NA")
             else:
-                freq.append(str(iac/an))
+                freq.append(str(round(iac/an,6)))
         return ",".join(freq)
 
 pattern1 = re.compile(r'''^##''')
